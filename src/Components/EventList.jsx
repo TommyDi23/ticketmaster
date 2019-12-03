@@ -1,11 +1,12 @@
 import React from "react";
+import EventCard from "./EventCard";
 
 function EventList(props) {
-  console.log(props.events)
+  
   return (
     <div>
-      <ul>
-        <li></li>
+      <ul className='eventList'>
+        <EventCard events={props.events} />
       </ul>
     </div>
   );
