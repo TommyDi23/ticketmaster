@@ -1,22 +1,36 @@
 import React, { Component } from "react";
-import EventList from './EventList'
+import EventList from "./EventList";
+import axios from "axios";
+
+
 
 class Staging extends Component {
   state = {
-    events: []
+    events: [],
+    keyword: ""
   };
   componentDidMount() {
-    fetch(
-      "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&apikey=e7FWmI9gzJZBRlkSCN3FNcyPsxexhekw"
-    )
-      .then(buffer => buffer.json())
-      .then(res => this.setState({events: res._embedded.events}));
+    this.getData();
   }
 
+  getData = keyword => {
+    axios
+      .get(
+        "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&apikey=e7FWmI9gzJZBRlkSCN3FNcyPsxexhekw",
+        { params: { keyword: keyword } }
+      )
+      .then(({ data }) => {
+        this.setState({ events: data._embedded.events });
+      })
+      .catch();
+  };
+
   render() {
-    return <div>
-      <EventList events={this.state.events}/>
-    </div>;
+    return (
+      <div>
+        <EventList events={this.state.events} func={this.getData} />
+      </div>
+    );
   }
 }
 
